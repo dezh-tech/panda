@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package service.v1;
+
+option go_package = "github.com/dezh-tech/go-gin-boilerplate/infrastructure/grpc_client";
+
+service GetStringService {
+    rpc GetString (GetStringRequest) returns (GetStringResponse);
+}
+
+message GetStringRequest {}
+
+message GetStringResponse {        
+    string str = 1;                       
+}

@@ -1,0 +1,29 @@
+environment: "prod"
+
+grpc_server:
+  bind: "0.0.0.0"
+  port: 50050
+
+http_server:
+  bind: "0.0.0.0"
+  port: 8080
+
+grpc_client:
+  endpoint: "client:8888"
+
+database:
+  db_name: immortal
+  query_timeout_in_ms: 3000
+  connection_timeout_in_ms: 5000
+
+redis:
+  query_timeout_in_ms: 3000
+  connection_timeout_in_ms: 5000
+
+logger:
+  level: "info" 
+  filename: "project.log" 
+  max_size: 10 # in mb.
+  max_backups: 10 
+  compress: true
+  targets: [file, console] 
