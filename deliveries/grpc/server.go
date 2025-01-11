@@ -6,9 +6,9 @@ import (
 	"strconv"
 	"time"
 
-	pb "github.com/dezh-tech/geb/delivery/grpc/gen"
-	"github.com/dezh-tech/geb/infrastructure/database"
-	"github.com/dezh-tech/geb/infrastructure/redis"
+	pb "github.com/dezh-tech/panda/deliveries/grpc/gen"
+	"github.com/dezh-tech/panda/infrastructures/database"
+	"github.com/dezh-tech/panda/infrastructures/redis"
 	"google.golang.org/grpc"
 )
 

@@ -3,12 +3,12 @@ package config
 import (
 	"os"
 
-	"github.com/dezh-tech/geb/delivery/grpc"
-	"github.com/dezh-tech/geb/delivery/http"
-	"github.com/dezh-tech/geb/infrastructure/database"
-	grpcclient "github.com/dezh-tech/geb/infrastructure/grpc_client"
-	"github.com/dezh-tech/geb/infrastructure/redis"
-	"github.com/dezh-tech/geb/pkg/logger"
+	"github.com/dezh-tech/panda/deliveries/grpc"
+	"github.com/dezh-tech/panda/deliveries/http"
+	"github.com/dezh-tech/panda/infrastructures/database"
+	grpcclient "github.com/dezh-tech/panda/infrastructures/grpc_client"
+	"github.com/dezh-tech/panda/infrastructures/redis"
+	"github.com/dezh-tech/panda/pkg/logger"
 	"github.com/joho/godotenv"
 	"gopkg.in/yaml.v3"
 )

@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	goginboilerplate "github.com/dezh-tech/geb"
-	pb "github.com/dezh-tech/geb/delivery/grpc/gen"
+	goginboilerplate "github.com/dezh-tech/panda"
+	pb "github.com/dezh-tech/panda/deliveries/grpc/gen"
 )
 
 type healthServer struct {

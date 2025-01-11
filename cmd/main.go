@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	goginboilerplate "github.com/dezh-tech/geb"
-	"github.com/dezh-tech/geb/cmd/commands"
+	goginboilerplate "github.com/dezh-tech/panda"
+	"github.com/dezh-tech/panda/cmd/commands"
 )
 
 func main() {

@@ -1,0 +1,77 @@
+basePath: /
+definitions:
+  domainhandler.DomainCreateRequest:
+    properties:
+      base_price_per_identifier:
+        minimum: 1
+        type: integer
+      default_ttl:
+        minimum: 1
+        type: integer
+      domain:
+        type: string
+      status:
+        enum:
+        - active
+        - inactive
+        type: string
+    required:
+    - base_price_per_identifier
+    - default_ttl
+    - domain
+    - status
+    type: object
+  domainhandler.DomainCreateResponse:
+    properties:
+      id: {}
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server Petstore server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Panda Swagger
+  version: "1.0"
+paths:
+  /domains:
+    post:
+      consumes:
+      - application/json
+      description: Accepts a JSON payload to create a new domain with the specified
+        attributes.
+      parameters:
+      - description: Domain creation payload
+        in: body
+        name: domain
+        required: true
+        schema:
+          $ref: '#/definitions/domainhandler.DomainCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Domain created successfully
+          schema:
+            $ref: '#/definitions/domainhandler.DomainCreateResponse'
+        "400":
+          description: Bad Request - Invalid input
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new domain
+      tags:
+      - domain
+swagger: "2.0"

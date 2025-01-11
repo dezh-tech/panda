@@ -3,15 +3,15 @@ package daemon
 import (
 	"time"
 
-	"github.com/dezh-tech/geb/config"
-	"github.com/dezh-tech/geb/delivery/grpc"
-	"github.com/dezh-tech/geb/delivery/http"
-	"github.com/dezh-tech/geb/infrastructure/database"
-	grpcclient "github.com/dezh-tech/geb/infrastructure/grpc_client"
-	"github.com/dezh-tech/geb/infrastructure/redis"
-	"github.com/dezh-tech/geb/pkg/logger"
-	userrepo "github.com/dezh-tech/geb/repository/user"
-	usersrv "github.com/dezh-tech/geb/service/user"
+	"github.com/dezh-tech/panda/config"
+	"github.com/dezh-tech/panda/deliveries/grpc"
+	"github.com/dezh-tech/panda/deliveries/http"
+	"github.com/dezh-tech/panda/infrastructures/database"
+	grpcClient "github.com/dezh-tech/panda/infrastructures/grpc_client"
+	"github.com/dezh-tech/panda/infrastructures/redis"
+	"github.com/dezh-tech/panda/pkg/logger"
+	domainRepo "github.com/dezh-tech/panda/repositories/domain"
+	domainService "github.com/dezh-tech/panda/services/domain"
 )
 
 type Daemon struct {
@@ -33,14 +33,14 @@ func New(cfg *config.Config) (*Daemon, error) {
 		return nil, err
 	}
 
-	_, err = grpcclient.New(cfg.GRPCClient.Endpoint)
+	_, err = grpcClient.New(cfg.GRPCClient.Endpoint)
 	if err != nil {
 		return nil, err
 	}
 
-	userRepo := userrepo.New(db)
+	userRepo := domainRepo.New(db)
 
-	hs := http.New(cfg.HTTPServer, usersrv.New(userRepo))
+	hs := http.New(cfg.HTTPServer, domainService.New(userRepo))
 	gs := grpc.New(&cfg.GRPCServer, r, db, time.Now())
 
 	return &Daemon{

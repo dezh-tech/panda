@@ -3,7 +3,7 @@ package grpcclient
 import (
 	"context"
 
-	pb "github.com/dezh-tech/geb/infrastructure/grpc_client/gen"
+	pb "github.com/dezh-tech/panda/infrastructures/grpc_client/gen"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )

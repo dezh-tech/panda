@@ -6,9 +6,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/dezh-tech/geb/cmd/daemon"
-	"github.com/dezh-tech/geb/config"
-	"github.com/dezh-tech/geb/pkg/logger"
+	"github.com/dezh-tech/panda/cmd/daemon"
+	"github.com/dezh-tech/panda/config"
+	"github.com/dezh-tech/panda/pkg/logger"
 )
 
 func HandleRun(args []string) {
