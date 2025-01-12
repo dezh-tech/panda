@@ -29,7 +29,7 @@ func (s DomainService) Create(ctx context.Context, req DomainInsertArgs) (*Domai
 		return nil, &validator.Varror{Error: ErrIsExist.Error()}
 	}
 
-	id, err := s.repo.Add(ctx, schema.Domain{
+	id, err := s.repo.Add(ctx, &schema.Domain{
 		Domain:                 req.Domain,
 		BasePricePerIdentifier: req.BasePricePerIdentifier,
 		DefaultTTL:             req.DefaultTTL,

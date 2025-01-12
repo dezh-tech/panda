@@ -48,11 +48,12 @@ func (r *BaseRepository) FindByField(ctx context.Context, field string, value in
 	if errors.Is(err, mongo.ErrNoDocuments) {
 		return nil
 	}
+
 	return err
 }
 
 // FindOne finds a single document matching the filter.
-func (r *BaseRepository) FindOne(ctx context.Context, filter interface{}, result interface{}) error {
+func (r *BaseRepository) FindOne(ctx context.Context, filter, result interface{}) error {
 	collection := r.Client.Database(r.DBName).Collection(r.Collection)
 
 	ctx, cancel := context.WithTimeout(ctx, r.QueryTimeout)
@@ -62,11 +63,12 @@ func (r *BaseRepository) FindOne(ctx context.Context, filter interface{}, result
 	if errors.Is(err, mongo.ErrNoDocuments) {
 		return nil
 	}
+	
 	return err
 }
 
 // FindAll finds all documents matching the filter.
-func (r *BaseRepository) FindAll(ctx context.Context, filter interface{}, results interface{}) error {
+func (r *BaseRepository) FindAll(ctx context.Context, filter, results interface{}) error {
 	collection := r.Client.Database(r.DBName).Collection(r.Collection)
 
 	ctx, cancel := context.WithTimeout(ctx, r.QueryTimeout)

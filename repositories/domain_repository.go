@@ -1,26 +1,25 @@
-package domain
+package repositories
 
 import (
 	"context"
 	"time"
 
-	"github.com/dezh-tech/panda/repositories"
 	schema "github.com/dezh-tech/panda/schemas"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type DomainRepository struct {
-	*repositories.BaseRepository
+	*BaseRepository
 }
 
-func New(client *mongo.Client, dbName string, timeout time.Duration) *DomainRepository {
+func NewDoaminRepository(client *mongo.Client, dbName string, timeout time.Duration) *DomainRepository {
 	return &DomainRepository{
-		BaseRepository: repositories.NewBaseRepository(client, dbName, schema.DOMAIN_SCHEMA_NAME, timeout),
+		BaseRepository: NewBaseRepository(client, dbName, schema.DOMAIN_SCHEMA_NAME, timeout),
 	}
 }
 
-func (r *DomainRepository) Add(ctx context.Context, d schema.Domain) (*mongo.InsertOneResult, error) {
+func (r *DomainRepository) Add(ctx context.Context, d *schema.Domain) (*mongo.InsertOneResult, error) {
 	d.CreatedAt = time.Now()
 	d.UpdatedAt = time.Now()
 
@@ -48,7 +47,7 @@ func (r *DomainRepository) GetAll(ctx context.Context, filter interface{}) (*[]s
 	return results, nil
 }
 
-func (r *DomainRepository) Update(ctx context.Context, filter interface{}, update interface{}) (*mongo.UpdateResult, error) {
+func (r *DomainRepository) Update(ctx context.Context, filter, update interface{}) (*mongo.UpdateResult, error) {
 	return r.UpdateOne(ctx, filter, update)
 }
 

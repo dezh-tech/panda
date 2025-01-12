@@ -9,10 +9,10 @@ import (
 )
 
 type Repository interface {
-	Add(ctx context.Context, entity schema.Domain) (*mongo.InsertOneResult, error)
+	Add(ctx context.Context, entity *schema.Domain) (*mongo.InsertOneResult, error)
 	GetByField(ctx context.Context, fieldName string, value interface{}) (*schema.Domain, error)
 	GetAll(ctx context.Context, filter interface{}) (*[]schema.Domain, error)
-	Update(ctx context.Context, filter interface{}, update interface{}) (*mongo.UpdateResult, error)
+	Update(ctx context.Context, filter, update interface{}) (*mongo.UpdateResult, error)
 	Delete(ctx context.Context, filter interface{}) (*mongo.DeleteResult, error)
 }
 

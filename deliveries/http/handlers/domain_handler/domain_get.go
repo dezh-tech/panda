@@ -3,7 +3,6 @@ package domainhandler
 import (
 	"net/http"
 
-	domainhandler "github.com/dezh-tech/panda/deliveries/http/handlers/domain_handler/dto"
 	"github.com/dezh-tech/panda/pkg"
 	"github.com/dezh-tech/panda/pkg/validator"
 	"github.com/labstack/echo/v4"
@@ -17,7 +16,7 @@ import (
 //	@Tags         domains
 //	@Accept       json
 //	@Produce      json
-//	@Success      200  {object}  pkg.ResponseDto{data=[]domainhandler.DomainGetResponse} "Domains retrieved successfully"
+//	@Success      200  {object}  pkg.ResponseDto{data=[]DomainGetResponse} "Domains retrieved successfully"
 //	@Failure      500  {object}  pkg.ResponseDto[string]                                "Internal Server Error"
 //	@Router       /domains [get]
 func (h Handler) domainGetAll(c echo.Context) error {
@@ -27,9 +26,9 @@ func (h Handler) domainGetAll(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, pkg.ResponseDto{Success: false, Error: validator.Varror{Error: echo.ErrInternalServerError.Error()}})
 	}
 
-	a := make([]domainhandler.DomainGetResponse, len(*domains))
+	domainsRes := make([]DomainGetResponse,0)
 	for _, d := range *domains {
-		a = append(a, domainhandler.DomainGetResponse{
+		domainsRes = append(domainsRes, DomainGetResponse{
 			Domain:                 d.Domain,
 			BasePricePerIdentifier: d.BasePricePerIdentifier,
 			DefaultTTL:             d.DefaultTTL,
@@ -38,5 +37,5 @@ func (h Handler) domainGetAll(c echo.Context) error {
 	}
 
 	// Respond with the created domain's ID
-	return c.JSON(http.StatusOK, pkg.ResponseDto{Success: true, Data: a})
+	return c.JSON(http.StatusOK, pkg.ResponseDto{Success: true, Data: domainsRes})
 }

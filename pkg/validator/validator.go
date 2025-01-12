@@ -29,7 +29,7 @@ func NewValidator() *Validator {
 
 		if validateInstance == nil {
 			validateInstance = &Validator{}
-			registerTranslations()
+			_ = registerTranslations()
 		}
 	}
 
@@ -57,8 +57,13 @@ func (*Validator) Validate(s interface{}) []*ValidationError {
 }
 
 // registerTranslations adds translations for validation error messages.
-func registerTranslations() {
-	en_translations.RegisterDefaultTranslations(validate, translator)
+func registerTranslations() (error) {
+	err := en_translations.RegisterDefaultTranslations(validate, translator)
+	if err != nil{
+		return err
+	}
+
+	return nil
 }
 
 // formatValidationErrors formats the validation errors for API responses.
