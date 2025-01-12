@@ -38,7 +38,7 @@ func New(cfg *config.Config) (*Daemon, error) {
 		return nil, err
 	}
 
-	domainRepo := domainRepo.New(db.Client, cfg.Database.DBName, time.Duration(cfg.Database.QueryTimeout))
+	domainRepo := domainRepo.New(db.Client, cfg.Database.DBName, time.Duration(cfg.Database.QueryTimeout)*time.Millisecond)
 
 	hs := http.New(cfg.HTTPServer, domainService.New(domainRepo))
 	gs := grpc.New(&cfg.GRPCServer, r, db, time.Now())

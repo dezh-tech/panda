@@ -1,1 +1,4 @@
 build
+**/.env
+**/config.yml
+.vscode

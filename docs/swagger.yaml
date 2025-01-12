@@ -25,6 +25,17 @@ definitions:
     properties:
       id: {}
     type: object
+  domainhandler.DomainGetResponse:
+    properties:
+      base_price_per_identifier:
+        type: integer
+      default_ttl:
+        type: integer
+      domain:
+        type: string
+      status:
+        type: string
+    type: object
   pkg.ResponseDto:
     properties:
       data: {}
@@ -67,6 +78,31 @@ info:
   version: "1.0"
 paths:
   /domains:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all domains with their attributes.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Domains retrieved successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/pkg.ResponseDto'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/domainhandler.DomainGetResponse'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/pkg.ResponseDto'
+      summary: Retrieve all domains
+      tags:
+      - domains
     post:
       consumes:
       - application/json

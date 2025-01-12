@@ -1,6 +1,8 @@
 package domainhandler
 
 import (
+	"context"
+	"fmt"
 	"net/http"
 
 	domainhandler "github.com/dezh-tech/panda/deliveries/http/handlers/domain_handler/dto"
@@ -37,14 +39,15 @@ func (h Handler) domainCreate(c echo.Context) error {
 	}
 
 	// Call the domain service to create the domain
-	ctx := c.Request().Context() // Extract context from Echo
-	resp, err := h.domainSvc.Create(ctx, domainService.DomainInsertArgs{
+	ctx := context.Background()
+	resp, err := h.domainService.Create(ctx, domainService.DomainInsertArgs{
 		Domain:                 req.Domain,
 		BasePricePerIdentifier: req.BasePricePerIdentifier,
 		DefaultTTL:             req.DefaultTTL,
 		Status:                 req.Status,
 	})
 	if err != nil {
+		fmt.Println(err)
 		return echo.NewHTTPError(http.StatusInternalServerError, pkg.ResponseDto{Success: false, Error: validator.Varror{Error: echo.ErrInternalServerError.Error()}})
 	}
 

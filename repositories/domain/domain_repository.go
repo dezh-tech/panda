@@ -28,21 +28,21 @@ func (r *DomainRepository) Add(ctx context.Context, d schema.Domain) (*mongo.Ins
 }
 
 func (r *DomainRepository) GetByField(ctx context.Context, fieldName string, value interface{}) (*schema.Domain, error) {
-	var result schema.Domain
-	err := r.FindOne(ctx, bson.M{fieldName: value}, &result)
+	var result *schema.Domain
+	err := r.FindOne(ctx, bson.M{fieldName: value}, result)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+func (r *DomainRepository) GetAll(ctx context.Context, filter interface{}) (*[]schema.Domain, error) {
+	results := new([]schema.Domain)
+	err := r.FindAll(ctx, filter, results)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
 			return nil, nil
 		}
-		return nil, err
-	}
-	return &result, nil
-}
-
-func (r *DomainRepository) GetAll(ctx context.Context, filter interface{}) ([]schema.Domain, error) {
-	var results []schema.Domain
-	err := r.FindAll(ctx, filter, &results)
-	if err != nil {
 		return nil, err
 	}
 	return results, nil
