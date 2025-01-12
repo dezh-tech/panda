@@ -1,8 +1,6 @@
 package domainhandler
 
 import (
-	"context"
-	"fmt"
 	"net/http"
 
 	domainhandler "github.com/dezh-tech/panda/deliveries/http/handlers/domain_handler/dto"
@@ -25,7 +23,6 @@ import (
 //	@Failure      500     {object}  pkg.ResponseDto[string]                              "Internal Server Error"
 //	@Router       /domains [post]
 func (h Handler) domainCreate(c echo.Context) error {
-	// Parse the request body into the DTO
 	req := new(domainhandler.DomainCreateRequest)
 	if err := c.Bind(req); err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, map[string]string{"error": "invalid input"})
@@ -39,7 +36,7 @@ func (h Handler) domainCreate(c echo.Context) error {
 	}
 
 	// Call the domain service to create the domain
-	ctx := context.Background()
+	ctx := c.Request().Context()
 	resp, err := h.domainService.Create(ctx, domainService.DomainInsertArgs{
 		Domain:                 req.Domain,
 		BasePricePerIdentifier: req.BasePricePerIdentifier,
@@ -50,6 +47,5 @@ func (h Handler) domainCreate(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, pkg.ResponseDto{Success: false, Error: validator.Varror{Error: echo.ErrInternalServerError.Error()}})
 	}
 
-	// Respond with the created domain's ID
 	return c.JSON(http.StatusOK, pkg.ResponseDto{Success: true, Data: domainhandler.DomainCreateResponse{ID: resp.ID}})
 }

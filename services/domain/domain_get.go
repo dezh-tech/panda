@@ -2,7 +2,6 @@ package domainService
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/dezh-tech/panda/pkg/validator"
 	schema "github.com/dezh-tech/panda/schemas"
