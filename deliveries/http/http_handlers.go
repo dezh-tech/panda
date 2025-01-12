@@ -9,12 +9,12 @@ import (
 
 // @title Panda Swagger
 // @version 1.0
-// @description This is a sample server Petstore server.
+// @description Panda is a NOSTR NIP-05 management service developed by Dezh.tech (Dezh technologies).
 // @termsOfService http://swagger.io/terms/
 
 // @contact.name API Support
-// @contact.url http://www.swagger.io/support
-// @contact.email support@swagger.io
+// @contact.url http://www.dezh.tech/
+// @contact.email hi@dezh.tech
 
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html

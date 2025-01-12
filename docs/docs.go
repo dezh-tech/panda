@@ -12,8 +12,8 @@ const docTemplate = `{
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
             "name": "API Support",
-            "url": "http://www.swagger.io/support",
-            "email": "support@swagger.io"
+            "url": "http://www.dezh.tech/",
+            "email": "hi@dezh.tech"
         },
         "license": {
             "name": "Apache 2.0",
@@ -26,7 +26,7 @@ const docTemplate = `{
     "paths": {
         "/domains": {
             "post": {
-                "description": "Accepts a JSON payload to create a new domain with the specified attributes.",
+                "description": "Create a new domain with the specified attributes.",
                 "consumes": [
                     "application/json"
                 ],
@@ -34,7 +34,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "domain"
+                    "domains"
                 ],
                 "summary": "Create a new domain",
                 "parameters": [
@@ -52,25 +52,31 @@ const docTemplate = `{
                     "200": {
                         "description": "Domain created successfully",
                         "schema": {
-                            "$ref": "#/definitions/domainhandler.DomainCreateResponse"
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/pkg.ResponseDto"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/domainhandler.DomainCreateResponse"
+                                        }
+                                    }
+                                }
+                            ]
                         }
                     },
                     "400": {
-                        "description": "Bad Request - Invalid input",
+                        "description": "Bad Request - Validation error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/pkg.ResponseDto"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "type": "object",
-                            "additionalProperties": {
-                                "type": "string"
-                            }
+                            "$ref": "#/definitions/pkg.ResponseDto"
                         }
                     }
                 }
@@ -112,6 +118,46 @@ const docTemplate = `{
             "properties": {
                 "id": {}
             }
+        },
+        "pkg.ResponseDto": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "error": {
+                    "$ref": "#/definitions/validator.Varror"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "success": {
+                    "type": "boolean"
+                }
+            }
+        },
+        "validator.ValidationError": {
+            "type": "object",
+            "properties": {
+                "field": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "validator.Varror": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                },
+                "validation_errors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/validator.ValidationError"
+                    }
+                }
+            }
         }
     }
 }`
@@ -123,7 +169,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "Panda Swagger",
-	Description:      "This is a sample server Petstore server.",
+	Description:      "Panda is a NOSTR NIP-05 management service developed by Dezh.tech (Dezh technologies).",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

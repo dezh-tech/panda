@@ -1,6 +1,8 @@
 package domainService
 
 import (
+	"context"
+
 	"github.com/dezh-tech/panda/pkg/validator"
 	schema "github.com/dezh-tech/panda/schemas"
 )
@@ -16,9 +18,9 @@ type DomainInsertRes struct {
 	ID interface{}
 }
 
-func (s DomainService) Create(req DomainInsertArgs) (*DomainInsertRes, *validator.Varror) {
+func (s DomainService) Create(ctx context.Context, req DomainInsertArgs) (*DomainInsertRes, *validator.Varror) {
 	// Check if the domain already exists
-	domain, err := s.repo.GetByDomain(req.Domain)
+	domain, err := s.repo.GetByField(ctx, "Domain", req.Domain)
 	if err != nil {
 		return nil, &validator.Varror{Error: err.Error()}
 	}
@@ -27,8 +29,7 @@ func (s DomainService) Create(req DomainInsertArgs) (*DomainInsertRes, *validato
 		return nil, &validator.Varror{Error: ErrIsExist.Error()}
 	}
 
-	// Add the domain to the repository
-	id, err := s.repo.Add(schema.Domain{
+	id, err := s.repo.Add(ctx, schema.Domain{
 		Domain:                 req.Domain,
 		BasePricePerIdentifier: req.BasePricePerIdentifier,
 		DefaultTTL:             req.DefaultTTL,
@@ -39,6 +40,5 @@ func (s DomainService) Create(req DomainInsertArgs) (*DomainInsertRes, *validato
 		return nil, &validator.Varror{Error: err.Error()}
 	}
 
-	// Return the response
 	return &DomainInsertRes{ID: id.InsertedID}, nil
 }

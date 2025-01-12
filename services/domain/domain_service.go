@@ -1,14 +1,19 @@
 package domainService
 
 import (
-	schema "github.com/dezh-tech/panda/schemas"
+	"context"
+
 	"github.com/dezh-tech/panda/pkg/validator"
+	schema "github.com/dezh-tech/panda/schemas"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type Repository interface {
-	Add(usr schema.Domain) (*mongo.InsertOneResult, error)
-	GetByDomain(domain string) (*schema.Domain, error)
+	Add(ctx context.Context, entity schema.Domain) (*mongo.InsertOneResult, error)
+	GetByField(ctx context.Context, fieldName string, value interface{}) (*schema.Domain, error)
+	GetAll(ctx context.Context, filter interface{}) ([]schema.Domain, error)
+	Update(ctx context.Context, filter interface{}, update interface{}) (*mongo.UpdateResult, error)
+	Delete(ctx context.Context, filter interface{}) (*mongo.DeleteResult, error)
 }
 
 type DomainService struct {

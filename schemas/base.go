@@ -1,6 +1,8 @@
 package schema
 
+import "time"
+
 type Base struct {
-	CreatedAt string `bson:"CreatedAt"`
-	UpdatedAt string `bson:"UpdatedAt"`
+	CreatedAt time.Time `bson:"CreatedAt"`
+	UpdatedAt time.Time `bson:"UpdatedAt"`
 }

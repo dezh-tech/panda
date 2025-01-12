@@ -25,13 +25,40 @@ definitions:
     properties:
       id: {}
     type: object
+  pkg.ResponseDto:
+    properties:
+      data: {}
+      error:
+        $ref: '#/definitions/validator.Varror'
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  validator.ValidationError:
+    properties:
+      field:
+        type: string
+      message:
+        type: string
+    type: object
+  validator.Varror:
+    properties:
+      error:
+        type: string
+      validation_errors:
+        items:
+          $ref: '#/definitions/validator.ValidationError'
+        type: array
+    type: object
 host: localhost:8080
 info:
   contact:
-    email: support@swagger.io
+    email: hi@dezh.tech
     name: API Support
-    url: http://www.swagger.io/support
-  description: This is a sample server Petstore server.
+    url: http://www.dezh.tech/
+  description: Panda is a NOSTR NIP-05 management service developed by Dezh.tech (Dezh
+    technologies).
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
@@ -43,8 +70,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: Accepts a JSON payload to create a new domain with the specified
-        attributes.
+      description: Create a new domain with the specified attributes.
       parameters:
       - description: Domain creation payload
         in: body
@@ -58,20 +84,21 @@ paths:
         "200":
           description: Domain created successfully
           schema:
-            $ref: '#/definitions/domainhandler.DomainCreateResponse'
+            allOf:
+            - $ref: '#/definitions/pkg.ResponseDto'
+            - properties:
+                data:
+                  $ref: '#/definitions/domainhandler.DomainCreateResponse'
+              type: object
         "400":
-          description: Bad Request - Invalid input
+          description: Bad Request - Validation error
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            $ref: '#/definitions/pkg.ResponseDto'
         "500":
           description: Internal Server Error
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            $ref: '#/definitions/pkg.ResponseDto'
       summary: Create a new domain
       tags:
-      - domain
+      - domains
 swagger: "2.0"
