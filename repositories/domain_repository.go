@@ -27,7 +27,9 @@ func (r *DomainRepository) Add(ctx context.Context, d *schema.Domain) (*mongo.In
 	return r.InsertOne(ctx, d)
 }
 
-func (r *DomainRepository) GetByField(ctx context.Context, fieldName string, value interface{}) (*schema.Domain, error) {
+func (r *DomainRepository) GetByField(ctx context.Context,
+	fieldName string, value interface{},
+) (*schema.Domain, error) {
 	var result *schema.Domain
 	err := r.FindOne(ctx, bson.M{fieldName: value}, result)
 	if err != nil {

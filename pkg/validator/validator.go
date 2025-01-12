@@ -70,15 +70,15 @@ func registerTranslations() error {
 
 // formatValidationErrors formats the validation errors for API responses.
 func formatValidationErrors(errs validator.ValidationErrors) []*ValidationError {
-	errors := make([]*ValidationError, 0)
+	es := make([]*ValidationError, 0)
 	for _, err := range errs {
-		errors = append(errors, &ValidationError{
+		es = append(es, &ValidationError{
 			Field:   err.Field(),
 			Message: err.Translate(translator),
 		})
 	}
 
-	return errors
+	return es
 }
 
 // ValidationError represents a single validation error.
