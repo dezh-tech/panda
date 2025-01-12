@@ -35,7 +35,6 @@ func (s DomainService) Create(ctx context.Context, req DomainInsertArgs) (*Domai
 		DefaultTTL:             req.DefaultTTL,
 		Status:                 req.Status,
 	})
-
 	if err != nil {
 		return nil, &validator.Varror{Error: err.Error()}
 	}
