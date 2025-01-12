@@ -26,7 +26,7 @@ func (h Handler) domainGetAll(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, pkg.ResponseDto{Success: false, Error: validator.Varror{Error: echo.ErrInternalServerError.Error()}})
 	}
 
-	domainsRes := make([]DomainGetResponse,0)
+	domainsRes := make([]DomainGetResponse, 0)
 	for _, d := range *domains {
 		domainsRes = append(domainsRes, DomainGetResponse{
 			Domain:                 d.Domain,

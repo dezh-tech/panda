@@ -63,7 +63,7 @@ func (r *BaseRepository) FindOne(ctx context.Context, filter, result interface{}
 	if errors.Is(err, mongo.ErrNoDocuments) {
 		return nil
 	}
-	
+
 	return err
 }
 

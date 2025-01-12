@@ -14,9 +14,9 @@ type DomainRepository struct {
 	*BaseRepository
 }
 
-func NewDoaminRepository(client *mongo.Client, dbName string, timeout time.Duration) *DomainRepository {
+func NewDomainRepository(client *mongo.Client, dbName string, timeout time.Duration) *DomainRepository {
 	return &DomainRepository{
-		BaseRepository: NewBaseRepository(client, dbName, schema.DOMAIN_SCHEMA_NAME, timeout),
+		BaseRepository: NewBaseRepository(client, dbName, schema.DomainSchemaName, timeout),
 	}
 }
 
@@ -47,7 +47,7 @@ func (r *DomainRepository) GetAll(ctx context.Context, filter interface{}) (*[]s
 
 		return nil, err
 	}
-	
+
 	return results, nil
 }
 

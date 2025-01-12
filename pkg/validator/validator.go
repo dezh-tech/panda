@@ -59,9 +59,9 @@ func (*Validator) Validate(s interface{}) []*ValidationError {
 }
 
 // registerTranslations adds translations for validation error messages.
-func registerTranslations() (error) {
+func registerTranslations() error {
 	err := en_translations.RegisterDefaultTranslations(validate, translator)
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
@@ -70,14 +70,14 @@ func registerTranslations() (error) {
 
 // formatValidationErrors formats the validation errors for API responses.
 func formatValidationErrors(errs validator.ValidationErrors) []*ValidationError {
-	errors:= make([]*ValidationError,0)
+	errors := make([]*ValidationError, 0)
 	for _, err := range errs {
 		errors = append(errors, &ValidationError{
 			Field:   err.Field(),
 			Message: err.Translate(translator),
 		})
 	}
-	
+
 	return errors
 }
 
