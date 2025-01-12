@@ -44,8 +44,10 @@ func (r *DomainRepository) GetAll(ctx context.Context, filter interface{}) (*[]s
 		if errors.Is(err, mongo.ErrNoDocuments) {
 			return &[]schema.Domain{}, nil
 		}
+
 		return nil, err
 	}
+	
 	return results, nil
 }
 
