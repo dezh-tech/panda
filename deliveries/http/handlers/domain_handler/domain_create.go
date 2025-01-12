@@ -47,7 +47,6 @@ func (h Handler) domainCreate(c echo.Context) error {
 		Status:                 req.Status,
 	})
 	if err != nil {
-		fmt.Println(err)
 		return echo.NewHTTPError(http.StatusInternalServerError, pkg.ResponseDto{Success: false, Error: validator.Varror{Error: echo.ErrInternalServerError.Error()}})
 	}
 

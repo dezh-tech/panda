@@ -11,7 +11,6 @@ import (
 func (s DomainService) GetAll(ctx context.Context, filter interface{}) (*[]schema.Domain, *validator.Varror) {
 	domains, err := s.repo.GetAll(ctx, filter)
 	if err != nil {
-		fmt.Println(err)
 		return nil, &validator.Varror{Error: err.Error()}
 	}
 

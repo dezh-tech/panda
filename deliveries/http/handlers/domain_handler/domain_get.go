@@ -26,7 +26,6 @@ func (h Handler) domainGetAll(c echo.Context) error {
 	ctx := context.Background()
 	domains, err := h.domainService.GetAll(ctx, bson.M{})
 	if err != nil {
-		fmt.Println(err.Error)
 		return echo.NewHTTPError(http.StatusInternalServerError, pkg.ResponseDto{Success: false, Error: validator.Varror{Error: echo.ErrInternalServerError.Error()}})
 	}
 
