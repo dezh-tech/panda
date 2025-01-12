@@ -31,7 +31,10 @@ func (h Handler) domainCreate(c echo.Context) error {
 	v := validator.NewValidator()
 	validationErrors := v.Validate(req)
 	if validationErrors != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, pkg.ResponseDto{Success: false, Error: validator.Varror{ValidationErrors: validationErrors}})
+		return echo.NewHTTPError(http.StatusBadRequest, pkg.ResponseDto{
+			Success: false,
+			Error:   validator.Varror{ValidationErrors: validationErrors},
+		})
 	}
 
 	// Call the domain service to create the domain
@@ -43,7 +46,10 @@ func (h Handler) domainCreate(c echo.Context) error {
 		Status:                 req.Status,
 	})
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, pkg.ResponseDto{Success: false, Error: validator.Varror{Error: echo.ErrInternalServerError.Error()}})
+		return echo.NewHTTPError(http.StatusInternalServerError, pkg.ResponseDto{
+			Success: false,
+			Error:   validator.Varror{Error: echo.ErrInternalServerError.Error()},
+		})
 	}
 
 	return c.JSON(http.StatusOK, pkg.ResponseDto{Success: true, Data: DomainCreateResponse{ID: resp.ID}})

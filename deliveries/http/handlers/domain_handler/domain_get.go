@@ -23,7 +23,10 @@ func (h Handler) domainGetAll(c echo.Context) error {
 	ctx := c.Request().Context()
 	domains, err := h.domainService.GetAll(ctx, bson.M{})
 	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, pkg.ResponseDto{Success: false, Error: validator.Varror{Error: echo.ErrInternalServerError.Error()}})
+		return echo.NewHTTPError(http.StatusInternalServerError, pkg.ResponseDto{
+			Success: false,
+			Error:   validator.Varror{Error: echo.ErrInternalServerError.Error()},
+		})
 	}
 
 	domainsRes := make([]DomainGetResponse, 0)
