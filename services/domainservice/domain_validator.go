@@ -1,4 +1,4 @@
-package domainService
+package domainservice
 
 type insertDomainValidation struct {
 	Domain                 string `validate:"required,url"`

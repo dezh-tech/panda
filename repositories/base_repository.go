@@ -37,7 +37,7 @@ func (r *BaseRepository) InsertOne(ctx context.Context, document interface{}) (*
 }
 
 // FindByField finds a single document by a specific field and value.
-func (r *BaseRepository) FindByField(ctx context.Context, field string, value interface{}, result interface{}) error {
+func (r *BaseRepository) FindByField(ctx context.Context, field string, value, result interface{}) error {
 	collection := r.Client.Database(r.DBName).Collection(r.Collection)
 
 	ctx, cancel := context.WithTimeout(ctx, r.QueryTimeout)

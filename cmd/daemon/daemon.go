@@ -11,7 +11,7 @@ import (
 	"github.com/dezh-tech/panda/infrastructures/redis"
 	"github.com/dezh-tech/panda/pkg/logger"
 	"github.com/dezh-tech/panda/repositories"
-	domainService "github.com/dezh-tech/panda/services/domain"
+	domainService "github.com/dezh-tech/panda/services/domainservice"
 )
 
 type Daemon struct {

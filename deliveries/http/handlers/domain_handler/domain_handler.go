@@ -1,6 +1,6 @@
 package domainhandler
 
-import domainService "github.com/dezh-tech/panda/services/domain"
+import domainService "github.com/dezh-tech/panda/services/domainservice"
 
 type Handler struct {
 	domainService domainService.DomainService

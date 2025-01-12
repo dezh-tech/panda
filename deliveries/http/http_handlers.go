@@ -2,7 +2,7 @@ package http
 
 import (
 	domainhandler "github.com/dezh-tech/panda/deliveries/http/handlers/domain_handler"
-	_ "github.com/dezh-tech/panda/docs"
+	_ "github.com/dezh-tech/panda/docs" // revive:disable-line:blank-imports Justification: Required for Swagger documentation
 	"github.com/labstack/echo/v4"
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
@@ -22,11 +22,11 @@ import (
 // @host localhost:8080
 // @BasePath /
 
-type HttpHandlers struct {
+type Handlers struct {
 	user domainhandler.Handler
 }
 
-func (h *HttpHandlers) Start(r *echo.Echo) {
+func (h *Handlers) Start(r *echo.Echo) {
 	h.user.SetRoutes(r)
 
 	r.GET("/swagger/*", echoSwagger.WrapHandler)

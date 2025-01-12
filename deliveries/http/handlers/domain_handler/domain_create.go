@@ -5,7 +5,7 @@ import (
 
 	"github.com/dezh-tech/panda/pkg"
 	"github.com/dezh-tech/panda/pkg/validator"
-	domainService "github.com/dezh-tech/panda/services/domain"
+	domainService "github.com/dezh-tech/panda/services/domainservice"
 	"github.com/labstack/echo/v4"
 )
 
