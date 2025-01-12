@@ -1,6 +1,7 @@
 package validator
 
 import (
+	"errors"
 	"sync"
 
 	"github.com/go-playground/locales/en"
@@ -43,7 +44,8 @@ func (*Validator) Validate(s interface{}) []*ValidationError {
 		return nil
 	}
 
-	if validationErrors, ok := err.(validator.ValidationErrors); ok {
+	var validationErrors validator.ValidationErrors
+	if errors.As(err, &validationErrors) {
 		return formatValidationErrors(validationErrors)
 	}
 
@@ -75,6 +77,7 @@ func formatValidationErrors(errs validator.ValidationErrors) []*ValidationError 
 			Message: err.Translate(translator),
 		})
 	}
+	
 	return errors
 }
 

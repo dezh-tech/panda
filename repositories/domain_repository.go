@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	schema "github.com/dezh-tech/panda/schemas"
@@ -32,6 +33,7 @@ func (r *DomainRepository) GetByField(ctx context.Context, fieldName string, val
 	if err != nil {
 		return nil, err
 	}
+
 	return result, nil
 }
 
@@ -39,8 +41,8 @@ func (r *DomainRepository) GetAll(ctx context.Context, filter interface{}) (*[]s
 	results := new([]schema.Domain)
 	err := r.FindAll(ctx, filter, results)
 	if err != nil {
-		if err == mongo.ErrNoDocuments {
-			return nil, nil
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return &[]schema.Domain{}, nil
 		}
 		return nil, err
 	}
