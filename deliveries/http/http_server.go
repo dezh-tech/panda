@@ -3,9 +3,10 @@ package http
 import (
 	"fmt"
 
+	"github.com/labstack/echo/v4"
+
 	"github.com/dezh-tech/panda/deliveries/http/handlers/domain"
 	"github.com/dezh-tech/panda/services/domain"
-	"github.com/labstack/echo/v4"
 )
 
 type Server struct {
