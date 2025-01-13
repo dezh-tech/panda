@@ -1,6 +1,6 @@
 package schema
 
-const DOMAIN_SCHEMA_NAME = "domains"
+const DomainSchemaName = "domains"
 
 type Domain struct {
 	Domain                 string `bson:"Domain"`

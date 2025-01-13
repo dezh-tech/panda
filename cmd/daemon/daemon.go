@@ -10,8 +10,8 @@ import (
 	grpcClient "github.com/dezh-tech/panda/infrastructures/grpc_client"
 	"github.com/dezh-tech/panda/infrastructures/redis"
 	"github.com/dezh-tech/panda/pkg/logger"
-	domainRepo "github.com/dezh-tech/panda/repositories/domain"
-	domainService "github.com/dezh-tech/panda/services/domain"
+	"github.com/dezh-tech/panda/repositories"
+	service "github.com/dezh-tech/panda/services/domain"
 )
 
 type Daemon struct {
@@ -38,9 +38,10 @@ func New(cfg *config.Config) (*Daemon, error) {
 		return nil, err
 	}
 
-	domainRepo := domainRepo.New(db.Client, cfg.Database.DBName, time.Duration(cfg.Database.QueryTimeout))
+	domainRepo := repositories.NewDomainRepository(db.Client, cfg.Database.DBName,
+		time.Duration(cfg.Database.QueryTimeout)*time.Millisecond)
 
-	hs := http.New(cfg.HTTPServer, domainService.New(domainRepo))
+	hs := http.New(cfg.HTTPServer, service.NewDomainService(domainRepo))
 	gs := grpc.New(&cfg.GRPCServer, r, db, time.Now())
 
 	return &Daemon{

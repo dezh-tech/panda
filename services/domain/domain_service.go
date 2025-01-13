@@ -1,4 +1,4 @@
-package domainService
+package service
 
 import (
 	"context"
@@ -8,19 +8,19 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type Repository interface {
-	Add(ctx context.Context, entity schema.Domain) (*mongo.InsertOneResult, error)
+type DomainRepository interface {
+	Add(ctx context.Context, schema *schema.Domain) (*mongo.InsertOneResult, error)
 	GetByField(ctx context.Context, fieldName string, value interface{}) (*schema.Domain, error)
-	GetAll(ctx context.Context, filter interface{}) ([]schema.Domain, error)
-	Update(ctx context.Context, filter interface{}, update interface{}) (*mongo.UpdateResult, error)
+	GetAll(ctx context.Context, filter interface{}) (*[]schema.Domain, error)
+	Update(ctx context.Context, filter, update interface{}) (*mongo.UpdateResult, error)
 	Delete(ctx context.Context, filter interface{}) (*mongo.DeleteResult, error)
 }
 
-type DomainService struct {
-	repo      Repository
+type Domain struct {
+	repo      DomainRepository
 	validator *validator.Validator
 }
 
-func New(repo Repository) DomainService {
-	return DomainService{repo: repo, validator: validator.NewValidator()}
+func NewDomainService(repo DomainRepository) Domain {
+	return Domain{repo: repo, validator: validator.NewValidator()}
 }

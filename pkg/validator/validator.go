@@ -1,6 +1,7 @@
 package validator
 
 import (
+	"errors"
 	"sync"
 
 	"github.com/go-playground/locales/en"
@@ -29,7 +30,7 @@ func NewValidator() *Validator {
 
 		if validateInstance == nil {
 			validateInstance = &Validator{}
-			registerTranslations()
+			_ = registerTranslations()
 		}
 	}
 
@@ -43,7 +44,8 @@ func (*Validator) Validate(s interface{}) []*ValidationError {
 		return nil
 	}
 
-	if validationErrors, ok := err.(validator.ValidationErrors); ok {
+	var validationErrors validator.ValidationErrors
+	if errors.As(err, &validationErrors) {
 		return formatValidationErrors(validationErrors)
 	}
 
@@ -57,20 +59,26 @@ func (*Validator) Validate(s interface{}) []*ValidationError {
 }
 
 // registerTranslations adds translations for validation error messages.
-func registerTranslations() {
-	en_translations.RegisterDefaultTranslations(validate, translator)
+func registerTranslations() error {
+	err := en_translations.RegisterDefaultTranslations(validate, translator)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // formatValidationErrors formats the validation errors for API responses.
 func formatValidationErrors(errs validator.ValidationErrors) []*ValidationError {
-	var errors []*ValidationError
+	es := make([]*ValidationError, 0)
 	for _, err := range errs {
-		errors = append(errors, &ValidationError{
+		es = append(es, &ValidationError{
 			Field:   err.Field(),
 			Message: err.Translate(translator),
 		})
 	}
-	return errors
+
+	return es
 }
 
 // ValidationError represents a single validation error.

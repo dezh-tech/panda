@@ -1,108 +1,120 @@
-# **Panda NIP-05 Identifier System Database Schemas**
+# Panda Document Schema Diagram
 
-This document outlines the MongoDB schemas for a system designed to sell and resolve NIP-05 identifiers.
-
----
-
-## **1. Users Collection**
-
-Stores user information and credentials.
-
-### **Collection Name**: `Users`  
-### **Type**: User Management  
-
-| **Field**        | **Type**    | **Constraints**                              | **Description**                                      |
-|-------------------|-------------|-----------------------------------------------|------------------------------------------------------|
-| `_id`            | ObjectId    | Unique, Indexed                               | Unique identifier for the user.                     |
-| `npub`           | string      | Required, Unique, Indexed                     | Nostr public key (e.g., npub...).                   |
-| `passwordHash`   | string      | Required                                      | Hashed password.                                    |
-| `createdAt`      | ISODate     | Required                                      | Account creation timestamp.                         |
-| `updatedAt`      | ISODate     | Required                                      | Last updated timestamp.                             |
+### **Schema: Users**  
+**Description**: Stores user credentials and metadata.  
+```json
+{
+  "_id": "ObjectId",
+  "name": "Users",
+  "npub": "string",  // Nostr public key
+  "passwordHash": "string",  // Hashed password for authentication
+  "createdAt": "ISODate",  // User creation timestamp
+  "updatedAt": "ISODate"   // Last updated timestamp
+}
+```
 
 ---
 
-## **2. Domains Collection**
-
-Defines the available domains for identifiers and their pricing.
-
-### **Collection Name**: `Domains`  
-### **Type**: Domain Management  
-
-| **Field**              | **Type**    | **Constraints**                              | **Description**                                      |
-|-------------------------|-------------|-----------------------------------------------|------------------------------------------------------|
-| `_id`                  | ObjectId    | Unique, Indexed                               | Unique identifier for the domain.                   |
-| `domain`               | string      | Required, Unique, Indexed                     | Domain name (e.g., "example.com").                  |
-| `basePricePerIdentifier` | number     | Required                                      | Cost per identifier (in sats).                      |
-| `defaultTTL`           | number      | Optional                                      | Default Time-to-Live for JSON cache (in seconds).   |
-| `status`               | string      | Required, Indexed                             | Status of the domain (e.g., "active", "inactive").  |
-| `createdAt`            | ISODate     | Required                                      | Creation timestamp.                                 |
-| `updatedAt`            | ISODate     | Required                                      | Last updated timestamp.                             |
+### **Schema: Domains**  
+**Description**: Defines domain settings, including pricing and TTL values.  
+```json
+{
+  "name": "Domains",
+  "_id": "ObjectId",
+  "domain": "string",  // Domain name (e.g., "example.com")
+  "basePricePerIdentifier": "number",  // Base cost per identifier (in sats)
+  "pricePerChar": "number",  // Cost per character (in sats)
+  "defaultTTL": "number",  // Default Time-to-Live for JSON cache
+  "createdAt": "ISODate",  // Domain creation timestamp
+  "updatedAt": "ISODate"   // Last updated timestamp
+}
+```
 
 ---
 
-## **3. Identifiers Collection**
-
-Represents individual NIP-05 identifiers.
-
-### **Collection Name**: `Identifiers`  
-### **Type**: Identifier Management  
-
-| **Field**        | **Type**    | **Constraints**                              | **Description**                                      |
-|-------------------|-------------|-----------------------------------------------|------------------------------------------------------|
-| `_id`            | ObjectId    | Unique, Indexed                               | Unique identifier for the NIP-05 identifier.         |
-| `name`           | string      | Required                                      | Identifier name (e.g., "alice").                    |
-| `domainId`       | ObjectId    | Required, Indexed                             | Reference to the `Domains` collection.              |
-| `fullIdentifier` | string      | Required, Unique, Indexed                     | Full identifier (e.g., "alice@example.com").         |
-| `userId`         | ObjectId    | Required, Indexed                             | Reference to the `Users` collection.                |
-| `expiresAt`      | ISODate     | Required                                      | Expiration date of the identifier.                  |
-| `status`         | string      | Required, Indexed                             | Status of the identifier (e.g., "active", "inactive"). |
-| `createdAt`      | ISODate     | Required                                      | Creation timestamp.                                 |
-| `updatedAt`      | ISODate     | Required                                      | Last updated timestamp.                             |
+### **Schema: Identifiers**  
+**Description**: Tracks identifiers assigned to users within a domain.  
+```json
+{
+  "name": "Identifiers",
+  "_id": "ObjectId",
+  "name": "string",  // Identifier name (e.g., "alice")
+  "domainId": "ObjectId",  // Reference to Domains table
+  "fullIdentifier": "string",  // Full identifier (e.g., "alice@example.com")
+  "userId": "ObjectId",  // Reference to Users table
+  "expiresAt": "ISODate",  // Subscription expiration date
+  "createdAt": "ISODate",  // Identifier creation timestamp
+  "updatedAt": "ISODate"   // Last updated timestamp
+}
+```
 
 ---
 
-## **4. Transactions Collection**
-
-Tracks all financial transactions, including payments for identifiers or other services.
-
-### **Collection Name**: `Transactions`  
-### **Type**: Financial Management  
-
-| **Field**           | **Type**    | **Constraints**                              | **Description**                                      |
-|----------------------|-------------|-----------------------------------------------|------------------------------------------------------|
-| `_id`              | ObjectId    | Unique, Indexed                               | Unique identifier for the transaction.              |
-| `transactionId`    | string      | Required, Unique, Indexed                     | Unique ID for the transaction (e.g., UUID).         |
-| `userId`           | ObjectId    | Required, Indexed                             | Reference to the `Users` collection.                |
-| `domainId`         | ObjectId    | Optional, Indexed                             | Reference to the `Domains` collection.              |
-| `identifierId`     | ObjectId    | Optional, Indexed                             | Reference to the `Identifiers` collection.          |
-| `amount`           | number      | Required                                      | Amount paid (e.g., in sats or fiat).                |
-| `currency`         | string      | Required                                      | Currency type (e.g., "BTC", "USD").                 |
-| `type`             | string      | Required, Indexed                             | Transaction type (e.g., "purchase", "renewal").     |
-| `paymentProcessor` | string      | Optional                                      | Payment processor used (e.g., "Stripe", "Bitcoin"). |
-| `paymentDetails`   | object      | Optional                                      | Additional details from the payment processor.      |
-| `paymentDetails.referenceId` | string | Optional, Indexed                          | Payment processor's reference ID.                   |
-| `paymentDetails.method` | string | Optional                                      | Payment method (e.g., "credit_card").               |
-| `paymentDetails.confirmedAt` | ISODate | Optional                                  | When the payment was confirmed (if applicable).     |
-| `paymentStatus`    | string      | Required, Indexed                             | Payment status (e.g., "completed", "pending").      |
-| `status`           | string      | Required, Indexed                             | Overall transaction status (e.g., "active").        |
-| `createdAt`        | ISODate     | Required                                      | Transaction creation timestamp.                     |
-| `updatedAt`        | ISODate     | Required                                      | Last updated timestamp.                             |
+### **Schema: Transactions**  
+**Description**: Logs all transactions, including payments for identifiers or domains.  
+```json
+{
+  "name": "Transactions",
+  "_id": "ObjectId",
+  "userId": "ObjectId",  // Reference to Users table
+  "domainId": "ObjectId",  // Reference to Domains table
+  "identifierId": "ObjectId",  // Reference to Identifiers table
+  "amount": "number",  // Amount paid
+  "currency": "string",  // e.g., "BTC", "USD"
+  "status": "string",  // e.g., "completed", "pending"
+  "createdAt": "ISODate"  // Transaction creation timestamp
+}
+```
 
 ---
 
-## **5. ResolveRecords Collection**
+### **Schema: Records**  
+**Description**: Stores resolution records (e.g., TXT, NOSTR, CNAME) for identifiers.  
+```json
+{
+  "name": "Records",
+  "_id": "ObjectId",
+  "identifierId": "ObjectId",  // Reference to Identifiers table
+  "type": "string",  // Record type (e.g., "NOSTR", "CNAME", "URL", "TXT")
+  "value": "string",  // Record value (e.g., public key, alias, URL)
+  "priority": "number",  // Sorting priority for multiple records
+  "ttl": "number",  // Time-to-Live for the record in cache
+  "createdAt": "ISODate",  // Record creation timestamp
+  "updatedAt": "ISODate"   // Last updated timestamp
+}
+```
 
-Stores resolution records for identifiers, similar to DNS records.
+---
 
-### **Collection Name**: `ResolveRecords`  
-### **Type**: Resolution Management  
+### **Schema: ReservedIdentifiers**  
+**Description**: Tracks reserved identifiers that cannot be registered by users and their associated pricing.  
+```json
+{
+  "name": "ReservedIdentifiers",
+  "_id": "ObjectId",
+  "fullIdentifier": "string",  // Reserved identifier (e.g., "google@abc.com", "a@abc.com")
+  "reservedBy": "ObjectId",  // Reference to Users table (optional)
+  "reason": "string",  // Reason for reservation (e.g., "Trademark", "Premium")
+  "price": "number",  // Price for the reserved identifier (in sats or specified currency)
+  "createdAt": "ISODate",  // Reservation creation timestamp
+  "updatedAt": "ISODate"   // Last updated timestamp
+}
+```
 
-| **Field**        | **Type**    | **Constraints**                              | **Description**                                      |
-|-------------------|-------------|-----------------------------------------------|------------------------------------------------------|
-| `_id`            | ObjectId    | Unique, Indexed                               | Unique identifier for the resolution record.         |
-| `identifierId`   | ObjectId    | Required, Indexed                             | Reference to the `Identifiers` collection.           |
-| `type`           | string      | Required, Indexed                             | Record type (e.g., "NOSTR", "CNAME", "URL", "TXT").  |
-| `value`          | string      | Required                                      | Record value (e.g., public key, alias, URL).         |
-| `priority`       | number      | Optional                                      | Priority for sorting multiple records.              |
-| `createdAt`      | ISODate     | Required                                      | Creation timestamp.                                 |
-| `updatedAt`      | ISODate     | Required                                      | Last updated timestamp.                             |
+---
+
+### **Schema: Logs**  
+**Description**: Tracks various system events, including record changes, user logins, purchases, and more.  
+```json
+{
+  "name": "Logs",
+  "_id": "ObjectId",
+  "userId": "ObjectId",  // Reference to Users table (optional, if applicable to a user)
+  "eventType": "string",  // Type of event (e.g., "record_change", "login", "purchase")
+  "entityType": "string",  // Affected entity type (e.g., "Records", "Users", "Identifiers")
+  "entityId": "ObjectId",  // ID of the affected entity (optional)
+  "description": "string",  // Detailed description of the event
+  "metadata": "object",  // Additional metadata (e.g., changes made, IP address, amount, etc.)
+  "createdAt": "ISODate"  // Log creation timestamp
+}
+```

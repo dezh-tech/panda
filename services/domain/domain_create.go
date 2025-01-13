@@ -1,4 +1,4 @@
-package domainService
+package service
 
 import (
 	"context"
@@ -7,37 +7,28 @@ import (
 	schema "github.com/dezh-tech/panda/schemas"
 )
 
-type DomainInsertArgs struct {
-	Domain                 string
-	BasePricePerIdentifier uint
-	DefaultTTL             uint32
-	Status                 string
-}
-
-type DomainInsertRes struct {
-	ID interface{}
-}
-
-func (s DomainService) Create(ctx context.Context, req DomainInsertArgs) (*DomainInsertRes, *validator.Varror) {
+func (s Domain) Create(ctx context.Context, domain, status string,
+	basePricePerIdentifier uint, defaultTTL uint32,
+) (interface{}, *validator.Varror) {
 	// Check if the domain already exists
-	domain, err := s.repo.GetByField(ctx, "Domain", req.Domain)
+	d, err := s.repo.GetByField(ctx, "Domain", domain)
 	if err != nil {
 		return nil, &validator.Varror{Error: err.Error()}
 	}
 
-	if domain != nil {
+	if d != nil {
 		return nil, &validator.Varror{Error: ErrIsExist.Error()}
 	}
 
-	id, err := s.repo.Add(ctx, schema.Domain{
-		Domain:                 req.Domain,
-		BasePricePerIdentifier: req.BasePricePerIdentifier,
-		DefaultTTL:             req.DefaultTTL,
-		Status:                 req.Status,
+	id, err := s.repo.Add(ctx, &schema.Domain{
+		Domain:                 domain,
+		BasePricePerIdentifier: basePricePerIdentifier,
+		DefaultTTL:             defaultTTL,
+		Status:                 status,
 	})
 	if err != nil {
 		return nil, &validator.Varror{Error: err.Error()}
 	}
 
-	return &DomainInsertRes{ID: id.InsertedID}, nil
+	return id.InsertedID, nil
 }
