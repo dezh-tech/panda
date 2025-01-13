@@ -11,7 +11,7 @@ import (
 	"github.com/dezh-tech/panda/infrastructures/redis"
 	"github.com/dezh-tech/panda/pkg/logger"
 	"github.com/dezh-tech/panda/repositories"
-	domainService "github.com/dezh-tech/panda/services/domainservice"
+	service "github.com/dezh-tech/panda/services/domain"
 )
 
 type Daemon struct {
@@ -41,7 +41,7 @@ func New(cfg *config.Config) (*Daemon, error) {
 	domainRepo := repositories.NewDomainRepository(db.Client, cfg.Database.DBName,
 		time.Duration(cfg.Database.QueryTimeout)*time.Millisecond)
 
-	hs := http.New(cfg.HTTPServer, domainService.New(domainRepo))
+	hs := http.New(cfg.HTTPServer, service.NewDomainService(domainRepo))
 	gs := grpc.New(&cfg.GRPCServer, r, db, time.Now())
 
 	return &Daemon{

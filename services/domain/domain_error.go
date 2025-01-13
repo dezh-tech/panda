@@ -1,4 +1,4 @@
-package domainservice
+package service
 
 import "errors"
 

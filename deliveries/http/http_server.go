@@ -3,8 +3,8 @@ package http
 import (
 	"fmt"
 
-	domainhandler "github.com/dezh-tech/panda/deliveries/http/handlers/domain_handler"
-	domainService "github.com/dezh-tech/panda/services/domainservice"
+	"github.com/dezh-tech/panda/deliveries/http/handlers/domain"
+	"github.com/dezh-tech/panda/services/domain"
 	"github.com/labstack/echo/v4"
 )
 
@@ -14,13 +14,13 @@ type Server struct {
 	handlers Handlers
 }
 
-func New(config Config, userSvc domainService.DomainService) Server {
+func New(config Config, userSvc service.Domain) Server {
 	return Server{
 		Router: echo.New(),
 		config: config,
 
 		handlers: Handlers{
-			user: domainhandler.New(userSvc),
+			domain: handlers.NewDomainService(userSvc),
 		},
 	}
 }

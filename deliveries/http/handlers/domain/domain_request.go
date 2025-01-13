@@ -1,4 +1,4 @@
-package domainhandler
+package handlers
 
 type DomainCreateRequest struct {
 	Domain                 string `json:"domain"                    validate:"required,hostname"`

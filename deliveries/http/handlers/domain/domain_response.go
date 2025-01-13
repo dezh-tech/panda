@@ -1,4 +1,4 @@
-package domainhandler
+package handlers
 
 type DomainCreateResponse struct {
 	ID interface{} `json:"id"`

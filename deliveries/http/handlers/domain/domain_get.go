@@ -1,4 +1,4 @@
-package domainhandler
+package handlers
 
 import (
 	"net/http"
@@ -6,7 +6,6 @@ import (
 	"github.com/dezh-tech/panda/pkg"
 	"github.com/dezh-tech/panda/pkg/validator"
 	"github.com/labstack/echo/v4"
-	"go.mongodb.org/mongo-driver/bson"
 )
 
 // DomainGetAll retrieves all domains.
@@ -19,9 +18,9 @@ import (
 //	@Success      200  {object}  pkg.ResponseDto{data=[]DomainGetResponse} "Domains retrieved successfully"
 //	@Failure      500  {object}  pkg.ResponseDto[string]                                "Internal Server Error"
 //	@Router       /domains [get]
-func (h Handler) domainGetAll(c echo.Context) error {
+func (dh Domain) getAll(c echo.Context) error {
 	ctx := c.Request().Context()
-	domains, err := h.domainService.GetAll(ctx, bson.M{})
+	domains, err := dh.service.GetAllWithoutFilter(ctx)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, pkg.ResponseDto{
 			Success: false,

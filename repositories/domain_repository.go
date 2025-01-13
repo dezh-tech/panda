@@ -10,24 +10,24 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type DomainRepository struct {
-	*BaseRepository
+type Domain struct {
+	*Base
 }
 
-func NewDomainRepository(client *mongo.Client, dbName string, timeout time.Duration) *DomainRepository {
-	return &DomainRepository{
-		BaseRepository: NewBaseRepository(client, dbName, schema.DomainSchemaName, timeout),
+func NewDomainRepository(client *mongo.Client, dbName string, timeout time.Duration) *Domain {
+	return &Domain{
+		Base: NewBaseRepository(client, dbName, schema.DomainSchemaName, timeout),
 	}
 }
 
-func (r *DomainRepository) Add(ctx context.Context, d *schema.Domain) (*mongo.InsertOneResult, error) {
+func (r *Domain) Add(ctx context.Context, d *schema.Domain) (*mongo.InsertOneResult, error) {
 	d.CreatedAt = time.Now()
 	d.UpdatedAt = time.Now()
 
 	return r.InsertOne(ctx, d)
 }
 
-func (r *DomainRepository) GetByField(ctx context.Context,
+func (r *Domain) GetByField(ctx context.Context,
 	fieldName string, value interface{},
 ) (*schema.Domain, error) {
 	var result *schema.Domain
@@ -39,7 +39,7 @@ func (r *DomainRepository) GetByField(ctx context.Context,
 	return result, nil
 }
 
-func (r *DomainRepository) GetAll(ctx context.Context, filter interface{}) (*[]schema.Domain, error) {
+func (r *Domain) GetAll(ctx context.Context, filter interface{}) (*[]schema.Domain, error) {
 	results := new([]schema.Domain)
 	err := r.FindAll(ctx, filter, results)
 	if err != nil {
@@ -53,10 +53,10 @@ func (r *DomainRepository) GetAll(ctx context.Context, filter interface{}) (*[]s
 	return results, nil
 }
 
-func (r *DomainRepository) Update(ctx context.Context, filter, update interface{}) (*mongo.UpdateResult, error) {
+func (r *Domain) Update(ctx context.Context, filter, update interface{}) (*mongo.UpdateResult, error) {
 	return r.UpdateOne(ctx, filter, update)
 }
 
-func (r *DomainRepository) Delete(ctx context.Context, filter interface{}) (*mongo.DeleteResult, error) {
+func (r *Domain) Delete(ctx context.Context, filter interface{}) (*mongo.DeleteResult, error) {
 	return r.DeleteOne(ctx, filter)
 }
