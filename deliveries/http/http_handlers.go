@@ -1,11 +1,10 @@
 package http
 
 import (
+	handlers "github.com/dezh-tech/panda/deliveries/http/handlers/domain"
+	_ "github.com/dezh-tech/panda/docs" // revive:disable-line:blank-imports Justification: Required for Swagger documentation
 	"github.com/labstack/echo/v4"
 	echoSwagger "github.com/swaggo/echo-swagger"
-
-	"github.com/dezh-tech/panda/deliveries/http/handlers/domain"
-	_ "github.com/dezh-tech/panda/docs" // revive:disable-line:blank-imports Justification: Required for Swagger documentation
 )
 
 // @title Panda Swagger

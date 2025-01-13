@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/dezh-tech/panda/pkg/validator"
-	"github.com/dezh-tech/panda/schemas"
+	schema "github.com/dezh-tech/panda/schemas"
 )
 
 func (s Domain) Create(ctx context.Context, domain, status string,
