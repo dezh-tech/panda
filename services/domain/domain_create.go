@@ -1,14 +1,15 @@
 package service
 
 import (
-    "context"
+	"context"
 
-    "github.com/dezh-tech/panda/pkg/validator"
-    "github.com/dezh-tech/panda/schemas"
+	"github.com/dezh-tech/panda/pkg/validator"
+	"github.com/dezh-tech/panda/schemas"
 )
 
 func (s Domain) Create(ctx context.Context, domain, status string,
-	 basePricePerIdentifier uint, defaultTTL uint32) (interface{}, *validator.Varror) {
+	basePricePerIdentifier uint, defaultTTL uint32,
+) (interface{}, *validator.Varror) {
 	// Check if the domain already exists
 	d, err := s.repo.GetByField(ctx, "Domain", domain)
 	if err != nil {
