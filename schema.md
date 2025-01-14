@@ -5,7 +5,7 @@
 ```json
 {
   "_id": "ObjectId",
-  "npub": "string",  // Nostr public key
+  "pubKey": "string",  // Nostr public key
   "createdAt": "ISODate",  // User creation timestamp
   "updatedAt": "ISODate"   // Last updated timestamp
 }

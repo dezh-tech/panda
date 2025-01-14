@@ -6,9 +6,9 @@ import (
 	schema "github.com/dezh-tech/panda/schemas"
 )
 
-func (s User) Create(ctx context.Context, npub string) (interface{}, error) {
+func (s User) Create(ctx context.Context, pubKey string) (interface{}, error) {
 	// Check if the user already exists
-	d, err := s.repo.GetByField(ctx, "npub", npub)
+	d, err := s.repo.GetByField(ctx, "pubkey", pubKey)
 	if err != nil {
 		return nil, err
 	}
@@ -18,7 +18,7 @@ func (s User) Create(ctx context.Context, npub string) (interface{}, error) {
 	}
 
 	id, err := s.repo.Add(ctx, &schema.User{
-		Npub: npub,
+		PubKey: pubKey,
 	})
 	if err != nil {
 		return nil, err
