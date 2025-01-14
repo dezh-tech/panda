@@ -5,9 +5,7 @@
 ```json
 {
   "_id": "ObjectId",
-  "name": "Users",
-  "npub": "string",  // Nostr public key
-  "passwordHash": "string",  // Hashed password for authentication
+  "pubKey": "string",  // Nostr public key
   "createdAt": "ISODate",  // User creation timestamp
   "updatedAt": "ISODate"   // Last updated timestamp
 }
@@ -19,7 +17,6 @@
 **Description**: Defines domain settings, including pricing and TTL values.  
 ```json
 {
-  "name": "Domains",
   "_id": "ObjectId",
   "domain": "string",  // Domain name (e.g., "example.com")
   "basePricePerIdentifier": "number",  // Base cost per identifier (in sats)
@@ -36,7 +33,6 @@
 **Description**: Tracks identifiers assigned to users within a domain.  
 ```json
 {
-  "name": "Identifiers",
   "_id": "ObjectId",
   "name": "string",  // Identifier name (e.g., "alice")
   "domainId": "ObjectId",  // Reference to Domains table
@@ -45,24 +41,6 @@
   "expiresAt": "ISODate",  // Subscription expiration date
   "createdAt": "ISODate",  // Identifier creation timestamp
   "updatedAt": "ISODate"   // Last updated timestamp
-}
-```
-
----
-
-### **Schema: Transactions**  
-**Description**: Logs all transactions, including payments for identifiers or domains.  
-```json
-{
-  "name": "Transactions",
-  "_id": "ObjectId",
-  "userId": "ObjectId",  // Reference to Users table
-  "domainId": "ObjectId",  // Reference to Domains table
-  "identifierId": "ObjectId",  // Reference to Identifiers table
-  "amount": "number",  // Amount paid
-  "currency": "string",  // e.g., "BTC", "USD"
-  "status": "string",  // e.g., "completed", "pending"
-  "createdAt": "ISODate"  // Transaction creation timestamp
 }
 ```
 
