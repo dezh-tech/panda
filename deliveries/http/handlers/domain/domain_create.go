@@ -1,10 +1,12 @@
 package handlers
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/dezh-tech/panda/pkg"
 	"github.com/dezh-tech/panda/pkg/validator"
+	domainService "github.com/dezh-tech/panda/services/domain"
 	"github.com/labstack/echo/v4"
 )
 
@@ -43,6 +45,13 @@ func (dh Domain) create(c echo.Context) error {
 	ctx := c.Request().Context()
 	resp, err := dh.service.Create(ctx, req.Domain, req.Status, req.BasePricePerIdentifier, req.DefaultTTL)
 	if err != nil {
+		if errors.Is(err, domainService.ErrIsExist) {
+			return echo.NewHTTPError(http.StatusConflict, pkg.ResponseDto{
+				Success: false,
+				Error:   validator.Varror{Error: err.Error()},
+			})
+		}
+
 		return echo.NewHTTPError(http.StatusInternalServerError, pkg.ResponseDto{
 			Success: false,
 			Error:   validator.Varror{Error: echo.ErrInternalServerError.Error()},
