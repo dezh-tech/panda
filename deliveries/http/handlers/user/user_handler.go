@@ -6,8 +6,8 @@ type User struct {
 	service service.User
 }
 
-func NewUserService(UserSvc service.User) User {
+func NewUserService(userSvc service.User) User {
 	return User{
-		service: UserSvc,
+		service: userSvc,
 	}
 }
