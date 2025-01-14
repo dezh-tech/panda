@@ -3,11 +3,11 @@ package handlers
 import (
 	"errors"
 	"net/http"
-	
+
+	"github.com/dezh-tech/panda/pkg/validator"
 	"github.com/labstack/echo/v4"
 
 	"github.com/dezh-tech/panda/pkg"
-	"github.com/dezh-tech/panda/pkg/validator"
 	domainService "github.com/dezh-tech/panda/services/domain"
 )
 
