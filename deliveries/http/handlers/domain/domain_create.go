@@ -51,6 +51,7 @@ func (dh Domain) create(c echo.Context) error {
 				Error:   validator.Varror{Error: err.Error()},
 			})
 		}
+		
 		return echo.NewHTTPError(http.StatusInternalServerError, pkg.ResponseDto{
 			Success: false,
 			Error:   validator.Varror{Error: echo.ErrInternalServerError.Error()},
