@@ -3,11 +3,12 @@ package handlers
 import (
 	"errors"
 	"net/http"
+	
+	"github.com/labstack/echo/v4"
 
 	"github.com/dezh-tech/panda/pkg"
 	"github.com/dezh-tech/panda/pkg/validator"
 	domainService "github.com/dezh-tech/panda/services/domain"
-	"github.com/labstack/echo/v4"
 )
 
 // CreateDomain creates a new domain.
@@ -51,7 +52,7 @@ func (dh Domain) create(c echo.Context) error {
 				Error:   validator.Varror{Error: err.Error()},
 			})
 		}
-		
+
 		return echo.NewHTTPError(http.StatusInternalServerError, pkg.ResponseDto{
 			Success: false,
 			Error:   validator.Varror{Error: echo.ErrInternalServerError.Error()},
