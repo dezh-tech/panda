@@ -45,7 +45,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/domainhandler.DomainGetResponse"
+                                                "$ref": "#/definitions/handlers.DomainGetResponse"
                                             }
                                         }
                                     }
@@ -80,7 +80,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domainhandler.DomainCreateRequest"
+                            "$ref": "#/definitions/handlers.DomainCreateRequest"
                         }
                     }
                 ],
@@ -96,7 +96,7 @@
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/domainhandler.DomainCreateResponse"
+                                            "$ref": "#/definitions/handlers.DomainCreateResponse"
                                         }
                                     }
                                 }
@@ -120,7 +120,7 @@
         }
     },
     "definitions": {
-        "domainhandler.DomainCreateRequest": {
+        "handlers.DomainCreateRequest": {
             "type": "object",
             "required": [
                 "base_price_per_identifier",
@@ -149,13 +149,13 @@
                 }
             }
         },
-        "domainhandler.DomainCreateResponse": {
+        "handlers.DomainCreateResponse": {
             "type": "object",
             "properties": {
                 "id": {}
             }
         },
-        "domainhandler.DomainGetResponse": {
+        "handlers.DomainGetResponse": {
             "type": "object",
             "properties": {
                 "base_price_per_identifier": {

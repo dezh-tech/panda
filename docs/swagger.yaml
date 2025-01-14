@@ -1,6 +1,6 @@
 basePath: /
 definitions:
-  domainhandler.DomainCreateRequest:
+  handlers.DomainCreateRequest:
     properties:
       base_price_per_identifier:
         minimum: 1
@@ -21,11 +21,11 @@ definitions:
     - domain
     - status
     type: object
-  domainhandler.DomainCreateResponse:
+  handlers.DomainCreateResponse:
     properties:
       id: {}
     type: object
-  domainhandler.DomainGetResponse:
+  handlers.DomainGetResponse:
     properties:
       base_price_per_identifier:
         type: integer
@@ -93,7 +93,7 @@ paths:
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/domainhandler.DomainGetResponse'
+                    $ref: '#/definitions/handlers.DomainGetResponse'
                   type: array
               type: object
         "500":
@@ -113,7 +113,7 @@ paths:
         name: domain
         required: true
         schema:
-          $ref: '#/definitions/domainhandler.DomainCreateRequest'
+          $ref: '#/definitions/handlers.DomainCreateRequest'
       produces:
       - application/json
       responses:
@@ -124,7 +124,7 @@ paths:
             - $ref: '#/definitions/pkg.ResponseDto'
             - properties:
                 data:
-                  $ref: '#/definitions/domainhandler.DomainCreateResponse'
+                  $ref: '#/definitions/handlers.DomainCreateResponse'
               type: object
         "400":
           description: Bad Request - Validation error

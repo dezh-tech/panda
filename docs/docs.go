@@ -51,7 +51,7 @@ const docTemplate = `{
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/definitions/domainhandler.DomainGetResponse"
+                                                "$ref": "#/definitions/handlers.DomainGetResponse"
                                             }
                                         }
                                     }
@@ -86,7 +86,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domainhandler.DomainCreateRequest"
+                            "$ref": "#/definitions/handlers.DomainCreateRequest"
                         }
                     }
                 ],
@@ -102,7 +102,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/domainhandler.DomainCreateResponse"
+                                            "$ref": "#/definitions/handlers.DomainCreateResponse"
                                         }
                                     }
                                 }
@@ -126,7 +126,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "domainhandler.DomainCreateRequest": {
+        "handlers.DomainCreateRequest": {
             "type": "object",
             "required": [
                 "base_price_per_identifier",
@@ -155,13 +155,13 @@ const docTemplate = `{
                 }
             }
         },
-        "domainhandler.DomainCreateResponse": {
+        "handlers.DomainCreateResponse": {
             "type": "object",
             "properties": {
                 "id": {}
             }
         },
-        "domainhandler.DomainGetResponse": {
+        "handlers.DomainGetResponse": {
             "type": "object",
             "properties": {
                 "base_price_per_identifier": {
