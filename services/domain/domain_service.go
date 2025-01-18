@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type DomainRepository interface {
+type Repository interface {
 	Add(ctx context.Context, schema *schema.Domain) (*mongo.InsertOneResult, error)
 	GetByField(ctx context.Context, fieldName string, value interface{}) (*schema.Domain, error)
 	GetAll(ctx context.Context, filter interface{}) (*[]schema.Domain, error)
@@ -17,10 +17,10 @@ type DomainRepository interface {
 }
 
 type Domain struct {
-	repo      DomainRepository
+	repo      Repository
 	validator *validator.Validator
 }
 
-func NewDomainService(repo DomainRepository) Domain {
+func NewDomainService(repo Repository) Domain {
 	return Domain{repo: repo, validator: validator.NewValidator()}
 }

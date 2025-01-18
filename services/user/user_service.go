@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type UserRepository interface {
+type Repository interface {
 	Add(ctx context.Context, schema *schema.User) (*mongo.InsertOneResult, error)
 	GetByField(ctx context.Context, fieldName string, value interface{}) (*schema.User, error)
 	GetAll(ctx context.Context, filter interface{}) (*[]schema.User, error)
@@ -17,10 +17,10 @@ type UserRepository interface {
 }
 
 type User struct {
-	repo      UserRepository
+	repo      Repository
 	validator *validator.Validator
 }
 
-func NewUserService(repo UserRepository) User {
+func NewUserService(repo Repository) User {
 	return User{repo: repo, validator: validator.NewValidator()}
 }
