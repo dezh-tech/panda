@@ -12,8 +12,6 @@ import (
 	"github.com/nbd-wtf/go-nostr"
 )
 
-const oneMinute = 60 * time.Second
-
 func Auth(url string) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
@@ -65,7 +63,7 @@ func CheckAuthEvent(e *nostr.Event, url string) bool {
 	}
 
 	diff := time.Until(e.CreatedAt.Time())
-	if !(diff <= oneMinute && diff >= -oneMinute) {
+	if !(diff <= time.Minute && diff >= -time.Minute) {
 		return false
 	}
 
