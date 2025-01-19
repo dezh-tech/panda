@@ -7,8 +7,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func (s User) GetAll(ctx context.Context, filter interface{}) (*[]schema.User, error) {
-	Users, err := s.repo.GetAll(ctx, filter)
+func (u User) GetAll(ctx context.Context, filter interface{}) (*[]schema.User, error) {
+	Users, err := u.repo.GetAll(ctx, filter)
 	if err != nil {
 		return nil, err
 	}
@@ -16,8 +16,8 @@ func (s User) GetAll(ctx context.Context, filter interface{}) (*[]schema.User, e
 	return Users, nil
 }
 
-func (s User) GetAllWithoutFilter(ctx context.Context) (*[]schema.User, error) {
-	Users, err := s.GetAll(ctx, bson.M{})
+func (u User) GetAllWithoutFilter(ctx context.Context) (*[]schema.User, error) {
+	Users, err := u.GetAll(ctx, bson.M{})
 	if err != nil {
 		return nil, err
 	}

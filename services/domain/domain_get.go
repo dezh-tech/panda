@@ -7,8 +7,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func (s Domain) GetAll(ctx context.Context, filter interface{}) (*[]schema.Domain, error) {
-	domains, err := s.repo.GetAll(ctx, filter)
+func (d Domain) GetAll(ctx context.Context, filter interface{}) (*[]schema.Domain, error) {
+	domains, err := d.repo.GetAll(ctx, filter)
 	if err != nil {
 		return nil, err
 	}
@@ -16,8 +16,8 @@ func (s Domain) GetAll(ctx context.Context, filter interface{}) (*[]schema.Domai
 	return domains, nil
 }
 
-func (s Domain) GetAllWithoutFilter(ctx context.Context) (*[]schema.Domain, error) {
-	domains, err := s.GetAll(ctx, bson.M{})
+func (d Domain) GetAllWithoutFilter(ctx context.Context) (*[]schema.Domain, error) {
+	domains, err := d.GetAll(ctx, bson.M{})
 	if err != nil {
 		return nil, err
 	}

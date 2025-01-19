@@ -6,21 +6,21 @@ import (
 	schema "github.com/dezh-tech/panda/schemas"
 )
 
-func (s Domain) Create(ctx context.Context, domain, status string,
+func (d Domain) Create(ctx context.Context, newDomain, status string,
 	basePricePerIdentifier uint, defaultTTL uint32,
 ) (interface{}, error) {
 	// Check if the domain already exists
-	d, err := s.repo.GetByField(ctx, "Domain", domain)
+	domain, err := d.repo.GetByField(ctx, "Domain", newDomain)
 	if err != nil {
 		return nil, err
 	}
 
-	if d != nil {
+	if domain != nil {
 		return nil, ErrIsExist
 	}
 
-	id, err := s.repo.Add(ctx, &schema.Domain{
-		Domain:                 domain,
+	id, err := d.repo.Add(ctx, &schema.Domain{
+		Domain:                 newDomain,
 		BasePricePerIdentifier: basePricePerIdentifier,
 		DefaultTTL:             defaultTTL,
 		Status:                 status,
