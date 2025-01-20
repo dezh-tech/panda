@@ -10,7 +10,6 @@ import (
 )
 
 func (i Identifier) Create(ctx context.Context, name, domainID, pubkey string) (interface{}, error) {
-
 	d, err := i.checkDomain(ctx, domainID)
 	if err != nil {
 		return nil, err

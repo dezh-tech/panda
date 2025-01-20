@@ -9,5 +9,5 @@ func (dh Identifier) SetIdentifierRoutes(e *echo.Echo) {
 	userGroup := e.Group("/identifiers")
 
 	userGroup.POST("", dh.create)
-	userGroup.GET("", dh.getAllByPubkey,middleware.Auth("a"))
+	userGroup.GET("", dh.getAllByPubkey, middleware.Auth("a"))
 }

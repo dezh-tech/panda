@@ -44,7 +44,7 @@ func (r *Base) FindByField(ctx context.Context, field string, value, result inte
 
 	filter := bson.M{field: value}
 	err := collection.FindOne(ctx, filter).Decode(result)
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
