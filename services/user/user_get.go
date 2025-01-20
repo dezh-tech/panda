@@ -24,3 +24,12 @@ func (u User) GetAllWithoutFilter(ctx context.Context) (*[]schema.User, error) {
 
 	return Users, nil
 }
+
+func (s User) GetByField(ctx context.Context, fieldName string, value interface{}) (*schema.User, error) {
+	domain, err := s.repo.GetByField(ctx, fieldName, value)
+	if err != nil {
+		return nil, err
+	}
+
+	return domain, nil
+}

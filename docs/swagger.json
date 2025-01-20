@@ -117,6 +117,197 @@
                     }
                 }
             }
+        },
+        "/identifiers": {
+            "get": {
+                "description": "Get a list of all identifiers associated with the provided public key.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "identifiers"
+                ],
+                "summary": "Retrieve all identifiers",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "identifiers retrieved successfully",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/pkg.ResponseDto"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/definitions/handlers.IdentifierGetResponse"
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/pkg.ResponseDto"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Creates a new identifier with the specified attributes. Returns success if the identifier is created successfully or relevant error messages if the creation fails.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "identifiers"
+                ],
+                "summary": "Create a new identifier",
+                "parameters": [
+                    {
+                        "description": "Identifier creation payload",
+                        "name": "identifier",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.IdentifierCreateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Identifier created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/pkg.ResponseDto"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request - Validation error or invalid input",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/pkg.ResponseDto"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "$ref": "#/definitions/validator.Varror"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict - Identifier already exists",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/pkg.ResponseDto"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "$ref": "#/definitions/validator.Varror"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error - Unexpected server error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/pkg.ResponseDto"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "$ref": "#/definitions/validator.Varror"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "post": {
+                "description": "Creates a new user using the provided public key. The request payload must include a valid public key for successful user creation.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Create a new user",
+                "parameters": [
+                    {
+                        "description": "Payload containing the public key for user creation",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.UserCreateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/pkg.ResponseDto"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request - Invalid input or validation errors",
+                        "schema": {
+                            "$ref": "#/definitions/pkg.ResponseDto"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict - User with the specified public key already exists",
+                        "schema": {
+                            "$ref": "#/definitions/pkg.ResponseDto"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error - An unexpected error occurred",
+                        "schema": {
+                            "$ref": "#/definitions/pkg.ResponseDto"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -167,7 +358,58 @@
                 "domain": {
                     "type": "string"
                 },
+                "id": {},
                 "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "handlers.IdentifierCreateRequest": {
+            "type": "object",
+            "required": [
+                "domain_id",
+                "name",
+                "pubkey"
+            ],
+            "properties": {
+                "domain_id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pubkey": {
+                    "type": "string"
+                }
+            }
+        },
+        "handlers.IdentifierGetResponse": {
+            "type": "object",
+            "properties": {
+                "domain_id": {
+                    "type": "string"
+                },
+                "expires_at": {
+                    "type": "string"
+                },
+                "full_identifier": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "pubkey": {
+                    "type": "string"
+                }
+            }
+        },
+        "handlers.UserCreateRequest": {
+            "type": "object",
+            "required": [
+                "pubKey"
+            ],
+            "properties": {
+                "pubKey": {
                     "type": "string"
                 }
             }

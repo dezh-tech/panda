@@ -15,7 +15,7 @@ import (
 func Auth(url string) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
-			token := c.Response().Header().Get("Authorization")
+			token := c.Request().Header.Get("Authorization")
 			if len(token) <= 6 {
 				return echo.NewHTTPError(http.StatusUnauthorized, pkg.ResponseDto{
 					Success: false,
@@ -23,7 +23,7 @@ func Auth(url string) echo.MiddlewareFunc {
 				})
 			}
 
-			data, err := base64.RawStdEncoding.DecodeString(token[:6])
+			data, err := base64.RawStdEncoding.DecodeString(token[6:])
 			if err != nil {
 				return echo.NewHTTPError(http.StatusUnauthorized, pkg.ResponseDto{
 					Success: false,
@@ -54,16 +54,15 @@ func Auth(url string) echo.MiddlewareFunc {
 }
 
 func CheckAuthEvent(e *nostr.Event, url string) bool {
+	if e.Kind != nostr.KindHTTPAuth {
+		return false
+	}
+
 	if len(e.Tags) != 2 {
 		return false
 	}
 
 	if isValid, err := e.CheckSignature(); !isValid || err != nil {
-		return false
-	}
-
-	diff := time.Until(e.CreatedAt.Time())
-	if !(diff <= time.Minute && diff >= -time.Minute) {
 		return false
 	}
 
@@ -74,7 +73,7 @@ func CheckAuthEvent(e *nostr.Event, url string) bool {
 	}
 
 	expiration := time.Unix(expirationInt, 0)
-	if !(expiration.After(time.Now().UTC()) && time.Until(expiration) >= 10*time.Minute) {
+	if expiration.Before(time.Now().UTC()) {
 		return false
 	}
 

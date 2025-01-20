@@ -14,7 +14,7 @@ func (u User) Create(ctx context.Context, pubKey string) (interface{}, error) {
 	}
 
 	if d != nil {
-		return nil, err
+		return nil, ErrIsExist
 	}
 
 	id, err := u.repo.Add(ctx, &schema.User{

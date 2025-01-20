@@ -2,7 +2,6 @@ package repositories
 
 import (
 	"context"
-	"errors"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -45,11 +44,11 @@ func (r *Base) FindByField(ctx context.Context, field string, value, result inte
 
 	filter := bson.M{field: value}
 	err := collection.FindOne(ctx, filter).Decode(result)
-	if errors.Is(err, mongo.ErrNoDocuments) {
-		return nil
+	if err != nil{
+		return err
 	}
 
-	return err
+	return nil
 }
 
 // FindOne finds a single document matching the filter.
@@ -60,11 +59,11 @@ func (r *Base) FindOne(ctx context.Context, filter, result interface{}) error {
 	defer cancel()
 
 	err := collection.FindOne(ctx, filter).Decode(result)
-	if errors.Is(err, mongo.ErrNoDocuments) {
-		return nil
+	if err != nil {
+		return err
 	}
 
-	return err
+	return nil
 }
 
 // FindAll finds all documents matching the filter.
