@@ -33,8 +33,42 @@ definitions:
         type: integer
       domain:
         type: string
+      id: {}
       status:
         type: string
+    type: object
+  handlers.IdentifierCreateRequest:
+    properties:
+      domain_id:
+        type: string
+      name:
+        type: string
+      pubkey:
+        type: string
+    required:
+    - domain_id
+    - name
+    - pubkey
+    type: object
+  handlers.IdentifierGetResponse:
+    properties:
+      domain_id:
+        type: string
+      expires_at:
+        type: string
+      full_identifier:
+        type: string
+      name:
+        type: string
+      pubkey:
+        type: string
+    type: object
+  handlers.UserCreateRequest:
+    properties:
+      pubKey:
+        type: string
+    required:
+    - pubKey
     type: object
   pkg.ResponseDto:
     properties:
@@ -137,4 +171,122 @@ paths:
       summary: Create a new domain
       tags:
       - domains
+  /identifiers:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all identifiers associated with the provided public
+        key.
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: identifiers retrieved successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/pkg.ResponseDto'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/handlers.IdentifierGetResponse'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/pkg.ResponseDto'
+      summary: Retrieve all identifiers
+      tags:
+      - identifiers
+    post:
+      consumes:
+      - application/json
+      description: Creates a new identifier with the specified attributes. Returns
+        success if the identifier is created successfully or relevant error messages
+        if the creation fails.
+      parameters:
+      - description: Identifier creation payload
+        in: body
+        name: identifier
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.IdentifierCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Identifier created successfully
+          schema:
+            $ref: '#/definitions/pkg.ResponseDto'
+        "400":
+          description: Bad Request - Validation error or invalid input
+          schema:
+            allOf:
+            - $ref: '#/definitions/pkg.ResponseDto'
+            - properties:
+                error:
+                  $ref: '#/definitions/validator.Varror'
+              type: object
+        "409":
+          description: Conflict - Identifier already exists
+          schema:
+            allOf:
+            - $ref: '#/definitions/pkg.ResponseDto'
+            - properties:
+                error:
+                  $ref: '#/definitions/validator.Varror'
+              type: object
+        "500":
+          description: Internal Server Error - Unexpected server error
+          schema:
+            allOf:
+            - $ref: '#/definitions/pkg.ResponseDto'
+            - properties:
+                error:
+                  $ref: '#/definitions/validator.Varror'
+              type: object
+      summary: Create a new identifier
+      tags:
+      - identifiers
+  /users:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new user using the provided public key. The request payload
+        must include a valid public key for successful user creation.
+      parameters:
+      - description: Payload containing the public key for user creation
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.UserCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User created successfully
+          schema:
+            $ref: '#/definitions/pkg.ResponseDto'
+        "400":
+          description: Bad Request - Invalid input or validation errors
+          schema:
+            $ref: '#/definitions/pkg.ResponseDto'
+        "409":
+          description: Conflict - User with the specified public key already exists
+          schema:
+            $ref: '#/definitions/pkg.ResponseDto'
+        "500":
+          description: Internal Server Error - An unexpected error occurred
+          schema:
+            $ref: '#/definitions/pkg.ResponseDto'
+      summary: Create a new user
+      tags:
+      - users
 swagger: "2.0"

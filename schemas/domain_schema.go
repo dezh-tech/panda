@@ -1,6 +1,10 @@
 package schema
 
-import "time"
+import (
+	"time"
+
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 const DomainSchemaName = "domains"
 
@@ -10,7 +14,7 @@ type Domain struct {
 	DefaultTTL             uint32 `bson:"default_ttl"`
 	Status                 string `bson:"status"`
 
-	ID        interface{} `bson:"_id"`
-	CreatedAt time.Time   `bson:"created_at"`
-	UpdatedAt time.Time   `bson:"updated_at"`
+	ID        primitive.ObjectID `bson:"_id"`
+	CreatedAt time.Time          `bson:"created_at"`
+	UpdatedAt time.Time          `bson:"updated_at"`
 }

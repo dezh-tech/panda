@@ -7,6 +7,7 @@ import (
 
 	schema "github.com/dezh-tech/panda/schemas"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -21,6 +22,7 @@ func NewUserRepository(client *mongo.Client, dbName string, timeout time.Duratio
 }
 
 func (r *User) Add(ctx context.Context, d *schema.User) (*mongo.InsertOneResult, error) {
+	d.ID = primitive.NewObjectID()
 	d.CreatedAt = time.Now()
 	d.UpdatedAt = time.Now()
 
@@ -30,9 +32,13 @@ func (r *User) Add(ctx context.Context, d *schema.User) (*mongo.InsertOneResult,
 func (r *User) GetByField(ctx context.Context,
 	fieldName string, value interface{},
 ) (*schema.User, error) {
-	var result *schema.User
+	result := new(schema.User)
 	err := r.FindOne(ctx, bson.M{fieldName: value}, result)
 	if err != nil {
+		if errors.Is(err, mongo.ErrNoDocuments) {
+			return nil, nil
+		}
+
 		return nil, err
 	}
 

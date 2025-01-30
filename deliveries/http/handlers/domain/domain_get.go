@@ -31,6 +31,7 @@ func (dh Domain) getAll(c echo.Context) error {
 	domainsRes := make([]DomainGetResponse, 0)
 	for _, d := range *domains {
 		domainsRes = append(domainsRes, DomainGetResponse{
+			ID:                     d.ID,
 			Domain:                 d.Domain,
 			BasePricePerIdentifier: d.BasePricePerIdentifier,
 			DefaultTTL:             d.DefaultTTL,

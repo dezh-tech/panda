@@ -24,3 +24,12 @@ func (d Domain) GetAllWithoutFilter(ctx context.Context) (*[]schema.Domain, erro
 
 	return domains, nil
 }
+
+func (s Domain) GetByField(ctx context.Context, fieldName string, value interface{}) (*schema.Domain, error) {
+	domain, err := s.repo.GetByField(ctx, fieldName, value)
+	if err != nil {
+		return nil, err
+	}
+
+	return domain, nil
+}
