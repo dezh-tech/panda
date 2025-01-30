@@ -2,7 +2,7 @@
 
 ### **Schema: Users**  
 **Description**: Stores user credentials and metadata.  
-```json
+```jsonc
 {
   "_id": "ObjectId",
   "pubKey": "string",  // Nostr public key
@@ -15,7 +15,7 @@
 
 ### **Schema: Domains**  
 **Description**: Defines domain settings, including pricing and TTL values.  
-```json
+```jsonc
 {
   "_id": "ObjectId",
   "domain": "string",  // Domain name (e.g., "example.com")
@@ -31,7 +31,7 @@
 
 ### **Schema: Identifiers**  
 **Description**: Tracks identifiers assigned to users within a domain.  
-```json
+```jsonc
 {
   "_id": "ObjectId",
   "name": "string",  // Identifier name (e.g., "alice")
@@ -48,7 +48,7 @@
 
 ### **Schema: Records**  
 **Description**: Stores resolution records (e.g., TXT, NOSTR, CNAME) for identifiers.  
-```json
+```jsonc
 {
   "name": "Records",
   "_id": "ObjectId",
@@ -66,7 +66,7 @@
 
 ### **Schema: ReservedIdentifiers**  
 **Description**: Tracks reserved identifiers that cannot be registered by users and their associated pricing.  
-```json
+```jsonc
 {
   "name": "ReservedIdentifiers",
   "_id": "ObjectId",
@@ -83,7 +83,7 @@
 
 ### **Schema: Logs**  
 **Description**: Tracks various system events, including record changes, user logins, purchases, and more.  
-```json
+```jsonc
 {
   "name": "Logs",
   "_id": "ObjectId",
